@@ -1,0 +1,461 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Finance API v1.0</title>
+    <link rel="icon" type="image/png" href="https://sap54.ru/templates/edisontheme/images/logo.svg">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-horizon/0.1.0/bootstrap-horizon.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://tonyzub.github.io/StroySmeta/libs/codeDev.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.24/sorting/datetime-moment.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.foundation.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedheader/3.1.4/css/fixedHeader.dataTables.css"/>
+  </head>
+  <body> 
+    <nav class="navbar navbar-light bg-light sticky-top py-0">
+      <div class="d-flex w-100">
+        <button class="w-25 btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
+          Меню
+        </button>
+        <h3 class="w-50 text-center" id="pageName"></h3>
+        <button class="w-25 btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasInfo" aria-controls="offcanvasInfo">Сводка</button>
+      </div>
+    </nav>
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasMenuLabel">Меню</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <div class="w-100 d-flex mb-4">
+          <input readonly class="form-control-plaintext w-75 fw-bold" placeholder="Пользователь" type="text" id="username">
+          <button class="btn btn-primary w-25" type="button" id="profile" onclick="LoadProfilePage()">Профиль</button>
+        </div>
+        <div class="btn-group-vertical w-100 gap-2">
+          <button class="btn btn-info" type="button" id="news" onclick="LoadNewsPage()">Новости</button>
+          <button class="btn btn-info" type="button" id="data" onclick="LoadDataPage()">Данные</button>
+          <button class="btn btn-info" type="button" id="operations" onclick="LoadOperationsPage()">Операции факт</button>
+          <button class="btn btn-info" type="button" id="operations" onclick="LoadPlansPage()">Операции план</button>
+          <button class="btn btn-secondary" type="button" id="wallets" onclick="LoadWalletsPage()">Кошельки</button>
+          <button class="btn btn-secondary" type="button" id="articles" onclick="LoadArticlesPage()">Статьи</button>
+          <button class="btn btn-secondary" type="button" id="tags" onclick="LoadTagsPage()">Теги</button>
+          <button class="btn btn-primary" type="button" id="signOut" onclick="TrySignOut()">Выйти</button>
+        </div>
+      </div>
+    </div>
+    <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasInfo" aria-labelledby="offcanvasInfoLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasInfoLabel">Сводка</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+      </div>
+    </div>
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNewInput" aria-labelledby="offcanvasNewInputLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="newInputTitle">New input</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body" id="newInputBody">
+      </div>
+    </div>
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasOldInput" aria-labelledby="offcanvasOldInputLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="oldInputTitle">Old input</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body" id="oldInputBody">
+      </div>
+    </div>
+    <div class="main" id="main"></div>
+    <!-- Alert modal -->
+    <div class="modal" tabindex="-1" id="alertModal" data-bs-backdrop="static" data-bs-keyboard="false" 
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Оповещение</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="alertModalText">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Ask modal -->
+    <div class="modal" tabindex="-1" id="askModal" data-bs-backdrop="static" data-bs-keyboard="false" 
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Оповещение</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="askModalText">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="askConfirmBtn" data-bs-dismiss="modal">Да</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Нет</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Preloader modal -->
+    <div class="modal" tabindex="-1" id="preloaderModal" data-bs-backdrop="static" data-bs-keyboard="false" 
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Оповещение</h5>
+          </div>
+          <div class="modal-body container">
+            <div class="row">
+              <div class="spinner-border text-primary justify-content-center col-2" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <div class="col-10" id="preloaderModalText"></div>
+            </div>
+          </div>   
+        </div>
+      </div>
+    </div>
+    <!-- Toast -->
+    <div class="toast position-fixed bottom-0 start-0 text-white bg-primary border-0" style="z-index: 1060" id="toast" role="alert" 
+      aria-live="assertive" aria-atomic="true">
+      <div class="d-flex toast-whole">
+        <div class="toast-body" id="toastText">
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+    <script> // Alert modal scripts
+
+      const ALERT_MODAL_ID = "alertModal";
+      const ALERT_MODAL_TEXT_ID = "alertModalText";
+      var alertModal;
+
+      function Alert(message){
+        document.getElementById(ALERT_MODAL_TEXT_ID).innerHTML = message;
+        ClosePreloader();
+        alertModal.show();
+      }
+
+      function InitAlertModal(){
+        alertModal = new bootstrap.Modal(document.getElementById(ALERT_MODAL_ID), {backdrop: true, keyboard: true});
+      }
+
+    </script>
+    <script> // Ask modal scripts
+
+      const ASK_MODAL_ID = "askModal"
+      const ASK_MODAL_TEXT_ID = "askModalText";
+      const ASK_CONFIRM_BTN_ID = "askConfirmBtn";    
+      var askModal;
+
+      function Ask(functionName, message){
+        document.getElementById(ASK_CONFIRM_BTN_ID).setAttribute( "onClick", "javascript: "+ functionName + ";" );
+        document.getElementById(ASK_MODAL_TEXT_ID).innerHTML = message;
+        askModal.show();
+      }
+
+      function InitAskModal(){
+        askModal = new bootstrap.Modal(document.getElementById(ASK_MODAL_ID), {backdrop: 'static', keyboard: false});
+      }
+
+    </script>
+    <script> // Preloader modal scripts
+
+      const PRELOADER_MODAL_ID = "preloaderModal"
+      const PRELOADER_MODAL_TEXT_ID = "preloaderModalText";       
+      var preloaderModal;
+
+      function OpenPreloader(message){
+        document.getElementById(PRELOADER_MODAL_TEXT_ID).innerHTML = message;
+        preloaderModal.show();
+      }
+
+      function ClosePreloader(){
+        preloaderModal.hide();
+      }
+
+      function InitPreloaderModal(){
+        preloaderModal = new bootstrap.Modal(document.getElementById(PRELOADER_MODAL_ID), {backdrop: 'static', keyboard: false});
+      }
+
+    </script>
+    <script> // Toast Scripts
+
+      const TOAST_ID = "toast";
+      const TOAST_TEXT_ID = "toastText";
+      var toast;
+
+      function InitToast(){
+        toast = new bootstrap.Toast(document.getElementById(TOAST_ID)); 
+      }
+
+      function AlertToast(message){
+        document.getElementById(TOAST_TEXT_ID).innerHTML = message;
+        toast.show();
+      }
+
+    </script>
+    <script type="text/javascript">
+      
+      const offcanvasMenu = new bootstrap.Offcanvas(GetElementById("offcanvasMenu"));
+      const offcanvasInfo = new bootstrap.Offcanvas(GetElementById("offcanvasInfo"));
+      const offcanvasNewInput = new bootstrap.Offcanvas(GetElementById("offcanvasNewInput"));
+      const offcanvasOldInput = new bootstrap.Offcanvas(GetElementById("offcanvasOldInput"));
+
+      function CloseMenu(){
+        offcanvasMenu.hide();
+      }
+
+    </script>
+    <script type="text/javascript">
+      
+      const PAGE_NAME_PARAMETER = "page";
+      const PROFILE_PAGE_NAME = "profile";
+      const NEWS_PAGE_NAME = "news";
+      const DATA_PAGE_NAME = "data";
+      const OPERATIONS_PAGE_NAME = "operations";
+      const PLANS_PAGE_NAME = "plans";
+      const WALLETS_PAGE_NAME = "wallets";
+      const ARTICLES_PAGE_NAME = "articles";
+      const TAGS_PAGE_NAME = "tags";
+      const usernameField = GetElementById("username");
+      const pageNameField = GetElementById("pageName");
+      const mainDiv = GetElementById("main");
+      const newInputTitle = GetElementById("newInputTitle");
+      const newInputBody = GetElementById("newInputBody");
+      const oldInputTitle = GetElementById("oldInputTitle");
+      const oldInputBody = GetElementById("oldInputBody");
+      const signOutButton = GetElementById("signOut");
+      var currentURL = new URL(window.location.href);
+      var currentPage = currentURL.searchParams.get(PAGE_NAME_PARAMETER);
+      var currentUser;
+      var isUnloadNeeded;
+
+      function GetPageNameRus(pageName){
+        let pageNameRus = pageName;
+        switch(pageName){
+          case PROFILE_PAGE_NAME:
+            pageNameRus = "Профиль";
+            break;
+          case NEWS_PAGE_NAME:
+            pageNameRus = "Новости";
+            break;
+          case DATA_PAGE_NAME:
+            pageNameRus = "Данные";
+            break;
+          case OPERATIONS_PAGE_NAME:
+            pageNameRus = "Операции факт";
+            break;
+          case PLANS_PAGE_NAME:
+            pageNameRus = "Операции план";
+            break;
+          case WALLETS_PAGE_NAME:
+            pageNameRus = "Кошельки";
+            break;
+          case ARTICLES_PAGE_NAME:
+            pageNameRus = "Статьи";
+            break;
+          case TAGS_PAGE_NAME:
+            pageNameRus = "Теги";
+            break;
+          default:
+            break;
+        }
+        return pageNameRus;
+      }
+
+      function GetPageData(){
+        switch(currentPage){
+          case PROFILE_PAGE_NAME:
+            LoadProfilePage();
+            break;
+          case NEWS_PAGE_NAME:
+            LoadNewsPage();
+            break;
+          case DATA_PAGE_NAME:
+            LoadDataPage();
+            break;
+          case OPERATIONS_PAGE_NAME:
+            LoadOperationsPage();
+            break;
+          case PLANS_PAGE_NAME:
+            LoadPlansPage();
+            break;
+          case WALLETS_PAGE_NAME:
+            LoadWalletsPage();
+            break;
+          case ARTICLES_PAGE_NAME:
+            LoadArticlesPage();
+            break;
+          case TAGS_PAGE_NAME:
+            LoadTagsPage();
+            break;
+          default:
+            LoadNewsPage();
+            break;
+        }
+      }
+
+      function SetPageNameParameter(pageName){
+        let url = currentURL;
+        let search_params = url.searchParams;
+        search_params.set(PAGE_NAME_PARAMETER, pageName);
+        url.search = search_params.toString();
+        let new_url = url.toString();
+        history.replaceState(null, null, new_url);
+      }
+
+      function SetPageName(pageName){
+        pageNameField.innerHTML = Titleize(GetPageNameRus(pageName));
+      }
+
+      function SetUnloadNeed(isNeeded){
+        isUnloadNeeded = isNeeded;
+      }
+
+      function PreparePage(pageName){
+        CloseMenu();
+        SetPageNameParameter(pageName);
+        SetPageName(pageName);
+      }
+
+      function MakeDataRequest(functionName, pageName){
+        if(isUnloadNeeded){
+          OnUnload();
+          SetUnloadNeed(false);
+        }
+        PreparePage(pageName);
+        mainDiv.innerHTML = PRELOADER_HTML;
+        let request = MakeRequest("POST", functionName);
+        request.onload = function() {
+          if (request.status != 200) {
+            console.log(request.status);
+            alert("Ошибка сервера, попробуйте позже");
+          } 
+          else {
+            let responseJSON = JSON.parse(request.response);
+            if(responseJSON.isSignedIn){
+              if(responseJSON.content.js != ""){
+                let scriptNode = document.createElement('script');
+                scriptNode.innerHTML = responseJSON.content.js;
+                mainDiv.appendChild(scriptNode);
+                OnLoad(responseJSON.content);
+                if(responseJSON.content.html != undefined){
+                  SetBaseHTML(responseJSON.content.html);
+                }
+              }  
+              else{
+                SetBaseHTML(responseJSON.content.html);
+              }       
+            }
+            else{
+              OpenURL(SIGNIN_PAGE_URL, PAGE_TARGETS.self);
+            }          
+          };
+        };
+        request.onerror = function(request) {
+          Alert("Ошибка соединения");
+        };
+      }
+
+      function SetBaseHTML(html){
+        mainDiv.innerHTML = ""; 
+        offcanvasNewInput.innerHTML = "";
+        offcanvasOldInput.innerHTML = "";
+        let divNode = document.createElement('div');
+        divNode.innerHTML = html;
+        mainDiv.appendChild(divNode);
+      }
+
+      function LoadProfilePage(){
+        MakeDataRequest("GetProfile", PROFILE_PAGE_NAME);
+      }
+
+      function LoadNewsPage(){
+        MakeDataRequest("GetNews", NEWS_PAGE_NAME);
+      }
+
+      function LoadDataPage(){
+        MakeDataRequest("GetData", DATA_PAGE_NAME);
+      }
+
+      function LoadOperationsPage(){
+        MakeDataRequest("GetOperations", OPERATIONS_PAGE_NAME);
+      }
+
+      function LoadPlansPage(){
+        MakeDataRequest("GetPlans", PLANS_PAGE_NAME);
+      }
+
+      function LoadWalletsPage(){
+        MakeDataRequest("GetWallets", WALLETS_PAGE_NAME);
+      }
+
+      function LoadArticlesPage(){
+        MakeDataRequest("GetArticles", ARTICLES_PAGE_NAME);
+      }
+
+      function LoadTagsPage(){
+        MakeDataRequest("GetTags", TAGS_PAGE_NAME);
+      }
+
+      function TrySignOut(){
+        signOutButton.disabled = true;
+        let request = MakeRequest("POST", "LogoutUser");
+        request.onload = function() {
+          if (request.status != 200) {
+            console.log(request.status);
+            Alert("Ошибка сервера, попробуйте позже");
+          } 
+          else {
+            let responseJSON = JSON.parse(request.response);
+            if(responseJSON.isLoggedOut){
+              SetCookie("Token", "");
+              SetCookie("Username", "");
+              OpenURL(SIGNIN_PAGE_URL, PAGE_TARGETS.self);
+            }
+            else{
+              Alert("Что-то пошло не так");
+            }
+          };
+          signOutButton.disabled = false;
+        };
+        request.onerror = function(request) {
+          Alert("Ошибка соединения");
+          signOutButton.disabled = false;
+        };
+      }
+
+      function SetUser(){
+        usernameField.value = "Пользователь: " + cookies["Username"];
+      }
+
+      window.onload = function() {
+        InitAlertModal();
+        InitAskModal();
+        InitPreloaderModal();
+        InitToast();
+        SetUser();
+        GetPageData();
+      };
+
+    </script>
+  </body>
+</html>

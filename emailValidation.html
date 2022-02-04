@@ -1,0 +1,60 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Email validation</title>
+    <link rel="icon" type="image/png" href="https://sap54.ru/templates/edisontheme/images/logo.svg">
+    <script type="text/javascript" src="https://tonyzub.github.io/StroySmeta/libs/code.js"></script>
+  </head>
+  <body> 
+  </body>
+  <script>
+    
+    const CHECK_EMAIL_FUNCTION_PARAMETER = "func";
+    const VALIDATION_TOKEN_PARAMETER = "param";
+
+    function TryValidateEmail(){
+      let url = new URL(window.location.href);
+      let checkEmailFunctionName = url.searchParams.get(CHECK_EMAIL_FUNCTION_PARAMETER);
+      let validationToken = url.searchParams.get(VALIDATION_TOKEN_PARAMETER);
+      CheckEmail(checkEmailFunctionName, validationToken);
+    }
+
+    function CheckEmail(functionName, validationToken){
+      let request = MakeRequest("POST", functionName, validationToken);
+      request.onload = function() {
+        if (request.status != 200) {
+          console.log(request.status);
+          switch(request.status){
+            case 404:
+              OpenURL(NOT_FOUND_URL, PAGE_TARGETS.self);
+              break;
+            default:
+              alert("Server error occured, try later");
+              break;
+          }
+        } 
+        else {
+          let responseJSON = JSON.parse(request.response);
+          console.log(responseJSON);
+          if(responseJSON.isValidated){
+            SetCookie("Token", responseJSON.token);
+            SetCookie("Username", responseJSON.username);
+            OpenURL(MAIN_PAGE_URL, PAGE_TARGETS.self);
+          }
+          else{
+            alert("Your email is not validated, the link is too old");
+          }
+        };
+      };
+      request.onerror = function(request) {
+        alert("Connection error");
+      };
+    }
+
+    window.onload = function() {
+      TryValidateEmail();
+    };
+    
+  </script>
+</html>
