@@ -1,6 +1,6 @@
 // #region Constants
 
-const REQ_URL = "https://script.google.com/macros/s/AKfycbziyGYQ3TQpPeNHLcpY0xDhtPtfGCWOJBnRhsmkz2A/dev?access_token=";
+const REQ_URL = "https://script.google.com/macros/s/AKfycbwGWg-IPYHdvsrffv3F4_wS5spoALQvsrxcyZw-Ob-7/dev?access_token=";
 const ROOT_URL = "https://tonyzub.github.io/StroySmeta/";
 const NOT_FOUND_PAGE_URL = "notFound";
 const SIGNIN_PAGE_URL = "signin";
