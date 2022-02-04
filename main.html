@@ -20,15 +20,15 @@
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.foundation.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedheader/3.1.4/css/fixedHeader.dataTables.css"/>
+    <link rel="stylesheet" href="styles/coreStyle.css">
   </head>
   <body> 
     <nav class="navbar navbar-light bg-light sticky-top py-0">
       <div class="d-flex w-100">
-        <button class="w-25 btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
+        <button class="w-auto btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
           Меню
         </button>
-        <h3 class="w-50 text-center" id="pageName"></h3>
-        <button class="w-25 btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasInfo" aria-controls="offcanvasInfo">Сводка</button>
+        <h3 class="w-100 text-center" id="pageName"></h3>
       </div>
     </nav>
     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
@@ -42,23 +42,10 @@
           <button class="btn btn-primary w-25" type="button" id="profile" onclick="LoadProfilePage()">Профиль</button>
         </div>
         <div class="btn-group-vertical w-100 gap-2">
-          <button class="btn btn-info" type="button" id="news" onclick="LoadNewsPage()">Новости</button>
-          <button class="btn btn-info" type="button" id="data" onclick="LoadDataPage()">Данные</button>
-          <button class="btn btn-info" type="button" id="operations" onclick="LoadOperationsPage()">Операции факт</button>
-          <button class="btn btn-info" type="button" id="operations" onclick="LoadPlansPage()">Операции план</button>
-          <button class="btn btn-secondary" type="button" id="wallets" onclick="LoadWalletsPage()">Кошельки</button>
-          <button class="btn btn-secondary" type="button" id="articles" onclick="LoadArticlesPage()">Статьи</button>
-          <button class="btn btn-secondary" type="button" id="tags" onclick="LoadTagsPage()">Теги</button>
+          <button class="btn btn-info" type="button" id="news" onclick="LoadCostCardsPage()">Быстрые сметы</button>
+          <button class="btn btn-secondary" type="button" id="tags" onclick="LoadContragentsPage()">Контрагенты</button>
           <button class="btn btn-primary" type="button" id="signOut" onclick="TrySignOut()">Выйти</button>
         </div>
-      </div>
-    </div>
-    <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasInfo" aria-labelledby="offcanvasInfoLabel">
-      <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasInfoLabel">Сводка</h5>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body">
       </div>
     </div>
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNewInput" aria-labelledby="offcanvasNewInputLabel">
@@ -215,7 +202,6 @@
     <script type="text/javascript">
       
       const offcanvasMenu = new bootstrap.Offcanvas(GetElementById("offcanvasMenu"));
-      const offcanvasInfo = new bootstrap.Offcanvas(GetElementById("offcanvasInfo"));
       const offcanvasNewInput = new bootstrap.Offcanvas(GetElementById("offcanvasNewInput"));
       const offcanvasOldInput = new bootstrap.Offcanvas(GetElementById("offcanvasOldInput"));
 
@@ -228,13 +214,8 @@
       
       const PAGE_NAME_PARAMETER = "page";
       const PROFILE_PAGE_NAME = "profile";
-      const NEWS_PAGE_NAME = "news";
-      const DATA_PAGE_NAME = "data";
-      const OPERATIONS_PAGE_NAME = "operations";
-      const PLANS_PAGE_NAME = "plans";
-      const WALLETS_PAGE_NAME = "wallets";
-      const ARTICLES_PAGE_NAME = "articles";
-      const TAGS_PAGE_NAME = "tags";
+      const COST_CARDS_PAGE_NAME = "costCards";
+      const CONTRAGENTS_PAGE_NAME = "contragents";
       const usernameField = GetElementById("username");
       const pageNameField = GetElementById("pageName");
       const mainDiv = GetElementById("main");
@@ -254,26 +235,11 @@
           case PROFILE_PAGE_NAME:
             pageNameRus = "Профиль";
             break;
-          case NEWS_PAGE_NAME:
-            pageNameRus = "Новости";
+          case COST_CARDS_PAGE_NAME:
+            pageNameRus = "Быстрые сметы";
             break;
-          case DATA_PAGE_NAME:
-            pageNameRus = "Данные";
-            break;
-          case OPERATIONS_PAGE_NAME:
-            pageNameRus = "Операции факт";
-            break;
-          case PLANS_PAGE_NAME:
-            pageNameRus = "Операции план";
-            break;
-          case WALLETS_PAGE_NAME:
-            pageNameRus = "Кошельки";
-            break;
-          case ARTICLES_PAGE_NAME:
-            pageNameRus = "Статьи";
-            break;
-          case TAGS_PAGE_NAME:
-            pageNameRus = "Теги";
+          case CONTRAGENTS_PAGE_NAME:
+            pageNameRus = "Клиенты";
             break;
           default:
             break;
@@ -286,29 +252,14 @@
           case PROFILE_PAGE_NAME:
             LoadProfilePage();
             break;
-          case NEWS_PAGE_NAME:
-            LoadNewsPage();
+          case COST_CARDS_PAGE_NAME:
+            LoadCostCardsPage();
             break;
-          case DATA_PAGE_NAME:
-            LoadDataPage();
-            break;
-          case OPERATIONS_PAGE_NAME:
-            LoadOperationsPage();
-            break;
-          case PLANS_PAGE_NAME:
-            LoadPlansPage();
-            break;
-          case WALLETS_PAGE_NAME:
-            LoadWalletsPage();
-            break;
-          case ARTICLES_PAGE_NAME:
-            LoadArticlesPage();
-            break;
-          case TAGS_PAGE_NAME:
-            LoadTagsPage();
+          case CONTRAGENTS_PAGE_NAME:
+            LoadContragentsPage();
             break;
           default:
-            LoadNewsPage();
+            LoadCostCardsPage();
             break;
         }
       }
@@ -319,7 +270,7 @@
         search_params.set(PAGE_NAME_PARAMETER, pageName);
         url.search = search_params.toString();
         let new_url = url.toString();
-        history.replaceState(null, null, new_url);
+        history.pushState(null, null, new_url);
       }
 
       function SetPageName(pageName){
@@ -388,32 +339,12 @@
         MakeDataRequest("GetProfile", PROFILE_PAGE_NAME);
       }
 
-      function LoadNewsPage(){
-        MakeDataRequest("GetNews", NEWS_PAGE_NAME);
+      function LoadCostCardsPage(){
+        MakeDataRequest("GetCostCards", COST_CARDS_PAGE_NAME);
       }
 
-      function LoadDataPage(){
-        MakeDataRequest("GetData", DATA_PAGE_NAME);
-      }
-
-      function LoadOperationsPage(){
-        MakeDataRequest("GetOperations", OPERATIONS_PAGE_NAME);
-      }
-
-      function LoadPlansPage(){
-        MakeDataRequest("GetPlans", PLANS_PAGE_NAME);
-      }
-
-      function LoadWalletsPage(){
-        MakeDataRequest("GetWallets", WALLETS_PAGE_NAME);
-      }
-
-      function LoadArticlesPage(){
-        MakeDataRequest("GetArticles", ARTICLES_PAGE_NAME);
-      }
-
-      function LoadTagsPage(){
-        MakeDataRequest("GetTags", TAGS_PAGE_NAME);
+      function LoadContragentsPage(){
+        MakeDataRequest("GetContragents", CONTRAGENTS_PAGE_NAME);
       }
 
       function TrySignOut(){
