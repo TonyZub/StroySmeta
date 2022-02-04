@@ -24,11 +24,12 @@
   </head>
   <body> 
     <nav class="navbar navbar-light bg-light sticky-top py-0">
-      <div class="d-flex w-100">
+      <div class="d-flex w-100 flex-nowrap">
         <button class="w-auto btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
           Меню
         </button>
         <h3 class="w-100 text-center" id="pageName"></h3>
+        <button class="w-auto btn btn-primary" type="button" id="signOut" onclick="TrySignOut()">Выйти</button>
       </div>
     </nav>
     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
@@ -44,7 +45,6 @@
         <div class="btn-group-vertical w-100 gap-2">
           <button class="btn btn-info" type="button" id="news" onclick="LoadCostCardsPage()">Быстрые сметы</button>
           <button class="btn btn-secondary" type="button" id="tags" onclick="LoadContragentsPage()">Контрагенты</button>
-          <button class="btn btn-primary" type="button" id="signOut" onclick="TrySignOut()">Выйти</button>
         </div>
       </div>
     </div>
