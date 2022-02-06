@@ -351,7 +351,12 @@
         InitPreloaderModal();
         InitToast();
         SetUser();
-        SetPageHash(PAGES_DATA.costCards.pageHash);
+        if(currentURL.hash == undefined){         
+         SetPageHash(PAGES_DATA.costCards.pageHash);
+        }
+        else{
+          OnPageHashChanged(currentURL.hash);
+        }
       };
 
       window.onhashchange = function(event) { 
