@@ -217,17 +217,17 @@
       
       const PAGES_DATA = new Object({
         profile: new Object({
-          pageName: "profile",
+          pageHash: "#profile",
           pageNameRus: "Профиль",
           dataRequestFunctionName: "GetProfile"
         }),
         costCards: new Object({
-          pageName: "costCards",
+          pageHash: "#costCards",
           pageNameRus: "Быстрые сметы",
           dataRequestFunctionName: "GetCostCards"
         }),
         contragents: new Object({
-          pageName: "contragents",
+          pageHash: "#contragents",
           pageNameRus: "Клиенты",
           dataRequestFunctionName: "GetContragents"
         })
@@ -246,14 +246,14 @@
       var currentUser;
       var isUnloadNeeded;
 
-      function SetPageNameHash(pageName){
+      function SetPageHash(pageHash){
         let url = currentURL;
-        url.hash = pageName;
+        url.hash = pageHash;
         history.pushState(null, null, url.toString());
       }
 
-      function OnPageHashChanged(pageName){
-        let page = PAGES_DATA[pageName];
+      function OnPageHashChanged(pageHash){
+        let page = PAGES_DATA[pageHash.substring(1)];
         SetPageTitle(page.pageNameRus);
         MakeDataRequest(page.dataRequestFunctionName);
       }
@@ -350,7 +350,8 @@
         InitPreloaderModal();
         InitToast();
         SetUser();
-        SetPageNameHash(PAGES_DATA.costCards.pageName);
+        SetPageHash(PAGES_DATA.costCards.pageHash);
+        OnPageHashChanged(currentURL.hash); 
       };
 
       window.onhashchange = function() { 
