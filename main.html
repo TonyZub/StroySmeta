@@ -250,13 +250,13 @@
         let url = currentURL;
         url.hash = pageHash;
         history.pushState(null, null, url.toString());
-        OnPageHashChanged();
+        OnPageHashChanged(pageHash);
       }
 
-      function OnPageHashChanged(){
-        let page = PAGES_DATA[currentURL.hash.substring(1)];
+      function OnPageHashChanged(pageHash){
+        let page = PAGES_DATA[pageHash.substring(1)];
         SetPageTitle(page.pageNameRus);
-        MakeDataRequest(page.dataRequestFunctionName);
+        //MakeDataRequest(page.dataRequestFunctionName);
       }
 
       function SetPageTitle(pageNameRus){
@@ -354,8 +354,8 @@
         SetPageHash(PAGES_DATA.costCards.pageHash);
       };
 
-      window.onhashchange = function() { 
-        OnPageHashChanged(); 
+      window.onhashchange = function(event) { 
+        OnPageHashChanged(new URL(event.newURL).hash); 
       }
 
     </script>
