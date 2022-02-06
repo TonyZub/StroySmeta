@@ -39,6 +39,10 @@
     border-color: #01A3D4 !important;
   }
 
+  .spinner-border{
+    color: #4E8879 !important;
+  }
+
   .btn-primary[disabled]{
     background-color: #3F6B5E;
     border-color: #3F6B5E;
