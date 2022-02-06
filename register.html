@@ -15,7 +15,7 @@
       <form name="registerForm" onsubmit="event.preventDefault(); TryRegister();">
         <h1 class="h3 fw-normal">Регистрация</h1>
         <div class="form-floating">
-          <select required class="form-control" id="organizationType" onchange="OnOrganizationTypeChanged()">
+          <select required class="form-control" id="organizationType">
             <option hidden disabled selected value="">Выберите тип организации</option>
             <option value="IP">ИП</option>
             <option value="OOO">ООО</option>
@@ -26,27 +26,27 @@
         <div class="form-floating">
           <input required type="text" name="companyName" class="form-control" id="companyName" placeholder="Название компании" 
             minlength="5" maxlength="20">
-          <label for="floatingCompanyName">Название компании</label>
+          <label for="companyName">Название компании</label>
         </div>
         <div class="form-floating">
           <input required type="text" name="inn" class="form-control" id="inn" placeholder="ИНН">
-          <label for="floatingINN">ИНН</label>
+          <label for="inn">ИНН</label>
         </div>
         <div class="form-floating">
           <input type="text" name="registryNumber" class="form-control" id="registryNumber" placeholder="Номер ЕГРЮЛ/ЕГРИП"> 
-          <label for="floatingEGNumber">Номер ЕГРЮЛ/ЕГРИП</label>
+          <label for="registryNumber">Номер ЕГРЮЛ/ЕГРИП</label>
         </div>
         <div class="form-floating">
           <input type="text" name="address" class="form-control" id="address" placeholder="Юридический адрес">
-          <label for="floatingAddress">Юридический адрес</label>
+          <label for="address">Юридический адрес</label>
         </div>
         <div class="form-floating">
           <input type="text" name="bik" class="form-control" id="bik" placeholder="БИК">
-          <label for="floatingBIK">БИК</label>
+          <label for="bik">БИК</label>
         </div>
         <div class="form-floating">
           <input type="text" name="bankAccount" class="form-control" id="bankAccount" placeholder="Номер банковского счета">
-          <label for="floatingAccount">Номер банковского счета</label>
+          <label for="bankAccount">Номер банковского счета</label>
         </div>
         <div class="form-floating">
           <input type="text" name="logoURL" class="form-control" id="logoURL" placeholder="Ссылка на лого">
