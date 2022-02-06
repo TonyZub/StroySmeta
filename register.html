@@ -15,13 +15,13 @@
       <form name="registerForm" onsubmit="event.preventDefault(); TryRegister();">
         <h1 class="h3 fw-normal">Регистрация</h1>
         <div class="form-floating">
-          <select required class="form-control" id="floatingOrganization" onchange="OnOrganizationTypeChanged()">
+          <select required class="form-control" id="organizationType" onchange="OnOrganizationTypeChanged()">
             <option hidden disabled selected value="">Выберите тип организации</option>
             <option value="IP">ИП</option>
             <option value="OOO">ООО</option>
             <option value="FL">Физ.лицо/самозанятый</option>
           </select> 
-          <label for="floatingOrganization">Тип организации</label>
+          <label for="organizationType">Тип организации</label>
         </div>
         <div class="form-floating">
           <input required type="text" name="companyName" class="form-control" id="companyName" placeholder="Название компании" 
@@ -74,7 +74,7 @@
     </main>
     <script type="text/javascript">
 
-      const companyTypeSelect = GetElementById("companyName");
+      const organizationTypeEl = GetElementById("organizationType");
       const submitButton = GetElementById("submitBtn");
       const innField = GetElementById("floatingINN");
       var inputElements = GetElementsByTagName("input");
@@ -83,7 +83,7 @@
         for(let i in inputElements){
           inputElements[i].disabled = doDisable;
         }
-        companyTypeSelect.disabled = doDisable;
+        organizationTypeEl.disabled = doDisable;
         submitButton.disabled = doDisable;
       }
 
@@ -93,7 +93,7 @@
         for(let i in inputElements){
           registerData[inputElements[i].id] = inputElements[i].value;
         }
-
+        registerData[organizationTypeEl.id] = organizationTypeEl.value;
         let request = MakeRequest("POST", "CheckRegistration", JSON.stringify(registerData));
         request.onload = function() {
           if (request.status != 200) {
