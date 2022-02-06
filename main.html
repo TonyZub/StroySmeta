@@ -44,7 +44,7 @@
             onclick="SetPageHash(PAGES_DATA.profile.pageHash)">Профиль</button>
         </div>
         <div class="btn-group-vertical w-100 gap-2">
-          <button class="btn btn-info" type="button" id="news" 
+          <button class="btn btn-info" type="button" id="news" data-bs-dismiss="offcanvas" 
             onclick="SetPageHash(PAGES_DATA.costCards.pageHash)">Быстрые сметы</button>
           <button class="btn btn-secondary" type="button" id="tags" data-bs-dismiss="offcanvas" 
             onclick="SetPageHash(PAGES_DATA.contragents.pageHash)">Контрагенты</button>
@@ -250,10 +250,11 @@
         let url = currentURL;
         url.hash = pageHash;
         history.pushState(null, null, url.toString());
+        OnPageHashChanged();
       }
 
-      function OnPageHashChanged(pageHash){
-        let page = PAGES_DATA[pageHash.substring(1)];
+      function OnPageHashChanged(){
+        let page = PAGES_DATA[currentURL.hash.substring(1)];
         SetPageTitle(page.pageNameRus);
         MakeDataRequest(page.dataRequestFunctionName);
       }
@@ -351,12 +352,10 @@
         InitToast();
         SetUser();
         SetPageHash(PAGES_DATA.costCards.pageHash);
-        OnPageHashChanged(currentURL.hash); 
       };
 
       window.onhashchange = function() { 
-        console.log('hash changed!');
-        OnPageHashChanged(currentURL.hash); 
+        OnPageHashChanged(); 
       }
 
     </script>
