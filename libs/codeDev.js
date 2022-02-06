@@ -111,20 +111,20 @@ function DelayCall(delegate, seconds, doRepeat){
   return doRepeat ? setInterval(() => {delegate()},seconds * 1000) : setTimeout(() => {delegate()},seconds * 1000); 
 }
 
-function GetElementById(id){
-  return document.getElementById(id);
+function GetElementById(id, where){
+  return where == null ? document.getElementById(id) : where.getElementById(id);
 }
 
-function GetElementsByClass(className){
-  return document.getElementsByClassName(className);
+function GetElementsByClass(className, where){
+  return where == null ? document.getElementsByClassName(className) : where.getElementsByClassName(className);
 }
 
-function GetELementsByName(name){
-  return document.getElementsByName(name);
+function GetELementsByName(name, where){
+  return where == null ? document.getElementsByName(name) : where.getElementsByName(name);
 }
 
-function GetElementsByTagName(tagName){
-  return document.getElementsByTagName(tagName);
+function GetElementsByTagName(tagName, where){
+  return where == null ? document.getElementsByTagName(tagName) : where.getElementsByTagName(tagName);
 }
 
 function Titleize(str) {
