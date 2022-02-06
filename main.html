@@ -256,7 +256,7 @@
       function OnPageHashChanged(pageHash){
         let page = PAGES_DATA[pageHash.substring(1)];
         SetPageTitle(page.pageNameRus);
-        //MakeDataRequest(page.dataRequestFunctionName);
+        MakeDataRequest(page.dataRequestFunctionName);
       }
 
       function SetPageTitle(pageNameRus){
