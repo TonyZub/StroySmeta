@@ -13,44 +13,88 @@
   <body class="text-center"> 
     <main class="form-signin">
       <form name="registerForm" onsubmit="event.preventDefault(); TryRegister();">
-        <img class="mb-4 img-fluid img-thumbnail rounded" src="https://sap54.ru/templates/edisontheme/images/logo.svg" alt="logo" width="111" height="127">
-        <h1 class="h3 mb-3 fw-normal">Регистрация</h1>
+        <h1 class="h3 fw-normal">Регистрация</h1>
         <div class="form-floating">
-          <input required type="email" name="email" class="form-control" id="floatingEmail" placeholder="name@example.com">
-          <label for="floatingEmail">Email</label>
+          <select required class="form-control" id="floatingOrganization" onchange="OnOrganizationTypeChanged()">
+            <option hidden disabled selected value="">Выберите тип организации</option>
+            <option value="IP">ИП</option>
+            <option value="OOO">ООО</option>
+            <option value="FL">Физ.лицо/самозанятый</option>
+          </select> 
+          <label for="floatingOrganization">Тип организации</label>
         </div>
         <div class="form-floating">
-          <input required type="text" name="username" class="form-control" id="floatingName" placeholder="Имя пользователя">
-          <label for="floatingName">Имя пользователя</label>
+          <input required type="text" name="companyName" class="form-control" id="companyName" placeholder="Название компании" 
+            minlength="5" maxlength="20">
+          <label for="floatingCompanyName">Название компании</label>
         </div>
         <div class="form-floating">
-          <input required type="password" name="password" class="form-control" id="floatingPassword" placeholder="Пароль">
-          <label for="floatingPassword">Пароль</label>
+          <input required type="text" name="INN" class="form-control" id="INN" placeholder="ИНН">
+          <label for="floatingINN">ИНН</label>
         </div>
-        <button class="w-100 btn btn-lg btn-primary" type="submit" id="submitBtn">Зарегистрироваться</button>
+        <div class="form-floating">
+          <input type="text" name="EGNumber" class="form-control" id="EGNumber" placeholder="Номер ЕГРЮЛ/ЕГРИП"> 
+          <label for="floatingEGNumber">Номер ЕГРЮЛ/ЕГРИП</label>
+        </div>
+        <div class="form-floating">
+          <input type="text" name="address" class="form-control" id="address" placeholder="Юридический адрес">
+          <label for="floatingAddress">Юридический адрес</label>
+        </div>
+        <div class="form-floating">
+          <input type="text" name="BIK" class="form-control" id="BIK" placeholder="БИК">
+          <label for="floatingBIK">БИК</label>
+        </div>
+        <div class="form-floating">
+          <input type="text" name="bankAccount" class="form-control" id="bankAccount" placeholder="Номер банковского счета">
+          <label for="floatingAccount">Номер банковского счета</label>
+        </div>
+        <div class="form-floating">
+          <input type="text" name="logoURL" class="form-control" id="logoURL" placeholder="Ссылка на лого">
+          <label for="logoURL">Ссылка на лого</label>
+        </div>
+        <div class="form-floating">
+          <input required type="text" name="username" class="form-control" id="username" placeholder="Имя пользователя" maxlength="20">
+          <label for="username">Имя пользователя</label>
+        </div>
+        <div class="form-floating">
+          <input required type="email" name="email" class="form-control" id="email" placeholder="Email (name@example.com)">
+          <label for="email">Email (name@example.com)</label>
+        </div>
+        <div class="form-floating">
+          <input required type="tel" name="phone" class="form-control" id="phone" pattern="\+7[0-9]{10}" placeholder="Телефон (+7XXXXXXXXXX)">
+          <label for="phone">Телефон (+7XXXXXXXXXX)</label>
+        </div>
+        <div class="form-floating">
+          <input required type="password" name="password" class="form-control" id="password" placeholder="Пароль" minlength="5" maxlength="20">
+          <label for="password">Пароль</label>
+        </div>
+        <button class="w-100 btn btn-lg btn-primary mt-2" type="submit" id="submitBtn">Зарегистрироваться</button>
       </form>
       <p class="mt-5 mb-3 text-muted">© 2022-2025</p>
     </main>
     <script type="text/javascript">
 
+      const companyTypeSelect = GetElementById("companyName");
       const submitButton = GetElementById("submitBtn");
-      const emailField = GetElementById("floatingEmail");
-      const usernameField = GetElementById("floatingName");
-      const passwordField = GetElementById("floatingPassword");
+      const innField = GetElementById("floatingINN");
+      var inputElements = GetElementsByTagName("input");
 
       function ChangeElementsActivity(doDisable){
+        for(let i in inputElements){
+          inputElements[i].disabled = doDisable;
+        }
+        companyTypeSelect.disabled = doDisable;
         submitButton.disabled = doDisable;
-        emailField.disabled = doDisable;
-        usernameField.disabled = doDisable;
-        passwordField.disabled = doDisable;
       }
 
       function TryRegister(){
         ChangeElementsActivity(true);
-        let email = emailField.value;
-        let username = usernameField.value;
-        let password = passwordField.value;
-        let request = MakeRequest("POST", "CheckRegistration", JSON.stringify(new Object({email: email, username: username, password: password})));
+        let registerData = new Object();
+        for(let i in inputElements){
+          registerData[inputElements[i].id] = inputElements[i].value;
+        }
+
+        let request = MakeRequest("POST", "CheckRegistration", JSON.stringify(registerData));
         request.onload = function() {
           if (request.status != 200) {
             console.log(request.status);
