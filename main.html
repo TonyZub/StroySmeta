@@ -256,7 +256,7 @@
         url.search = search_params.toString();
         let new_url = url.toString();
         history.pushState(null, null, new_url);
-        OnPageParameterChanged(pageName);
+        //OnPageParameterChanged(pageName);
       }
 
       function OnPageParameterChanged(pageName){
@@ -358,15 +358,11 @@
         InitToast();
         SetUser();
         SetPageNameParameter(PAGES_DATA.costCards.pageName);
+        window.addEventListener('locationchange', function(){
+            console.log('location changed!');
+            OnPageParameterChanged();
+        })
       };
-
-      window.onhashchange = HashChanged;
-
-      //and read location.hash in the change function instead
-      function HashChanged(){
-        console.log("Changed hash");
-        OnPageParameterChanged();
-      }
 
     </script>
   </body>
