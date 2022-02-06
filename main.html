@@ -47,7 +47,7 @@
           <button class="btn btn-info" type="button" id="news" 
             onclick="SetPageNameParameter(PAGES_DATA.costCards.pageName)">Быстрые сметы</button>
           <button class="btn btn-secondary" type="button" id="tags" data-bs-dismiss="offcanvas" 
-            onclick="SetPageNameParameter(PAGES_DATA.contragents.pageName)()">Контрагенты</button>
+            onclick="SetPageNameParameter(PAGES_DATA.contragents.pageName)">Контрагенты</button>
         </div>
       </div>
     </div>
@@ -360,7 +360,11 @@
         SetPageNameParameter(PAGES_DATA.costCards.pageName);
       };
 
-      window.onhashchange = function() {
+      window.onhashchange = HashChanged;
+
+      //and read location.hash in the change function instead
+      function HashChanged(){
+        console.log("Changed hash");
         OnPageParameterChanged();
       }
 
