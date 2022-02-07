@@ -19,6 +19,7 @@
     <script type="text/javascript" src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.foundation.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedheader/3.1.4/css/fixedHeader.dataTables.css"/>
     <link rel="stylesheet" href="styles/coreStyle.css">
   </head>
@@ -38,10 +39,10 @@
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div class="offcanvas-body">
-        <div class="w-100 mb-4">
-          <input readonly class="form-control-plaintext w-75 fw-bold" placeholder="Пользователь" type="text" id="username">
+        <div class="w-100 mb-4 d-flex">
+          <input readonly class="form-control-plaintext w-100 fw-bold" placeholder="Пользователь" type="text" id="username">
           <button class="btn btn-primary w-auto" type="button" id="profile" data-bs-dismiss="offcanvas" 
-            onclick="SetPageHash(PAGES_DATA.profile.pageHash)">Профиль</button>
+            onclick="SetPageHash(PAGES_DATA.profile.pageHash)"><i class="bi bi-gear-fill"></i></button>
         </div>
         <div class="btn-group-vertical w-100 gap-2">
           <button class="btn btn-info" type="button" id="news" data-bs-dismiss="offcanvas" 
