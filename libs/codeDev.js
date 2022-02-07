@@ -6,6 +6,7 @@ const NOT_FOUND_PAGE_URL = "notFound";
 const SIGNIN_PAGE_URL = "signin";
 const MAIN_PAGE_URL = "main";
 const EMAIL_NOTIFICATION_URL = "emailNotification";
+const REMIND_NOTIFICATION_URL = "emailRemind";
 const PAGE_TARGETS =
 {
   self: "_self",
