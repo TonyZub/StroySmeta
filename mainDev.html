@@ -49,6 +49,8 @@
             onclick="SetPageHash(PAGES_DATA.costCards.pageHash)">Быстрые сметы</button>
           <button class="btn btn-secondary" type="button" id="tags" data-bs-dismiss="offcanvas" 
             onclick="SetPageHash(PAGES_DATA.contragents.pageHash)">Клиенты</button>
+          <button class="btn btn-secondary" type="button" id="price" data-bs-dismiss="offcanvas" 
+            onclick="TryOpenPrice()">Прайс</button>
         </div>
       </div>
     </div>
@@ -313,6 +315,30 @@
         let divNode = document.createElement('div');
         divNode.innerHTML = html;
         mainDiv.appendChild(divNode);
+      }
+
+      function TryOpenPrice(){
+        OpenPreloader("Открываю прайс");
+        let request = MakeRequest("POST", "GetPriceURL");
+        request.onload = function() {
+          if (request.status != 200) {
+            console.log(request.status);
+            Alert("Ошибка сервера, попробуйте позже");
+          } 
+          else {
+            let responseJSON = JSON.parse(request.response);
+            if(responseJSON.isSignedIn){
+              ClosePreloader();
+              OpenURL(responseJSON.priceURL, PAGE_TARGETS.blank);
+            }
+            else{
+              Alert("Что-то пошло не так");
+            }
+          };
+        };
+        request.onerror = function(request) {
+          Alert("Ошибка соединения");
+        };
       }
 
       function TrySignOut(){
