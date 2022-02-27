@@ -136,3 +136,25 @@ function Titleize(str) {
 }
 
 // #endregion
+
+
+// #region Extensions
+
+Object.defineProperty(String.prototype, "replaceAll", {
+    value: function replaceAll(a, b) {
+      let regex = new RegExp(a, "g"); 
+      return this.replace(regex, b);
+    },
+    writable: true,
+    configurable: true
+});
+
+Object.defineProperty(String.prototype, "contains", {
+    value: function contains(a) {
+      return this.indexOf(a) != -1;
+    },
+    writable: true,
+    configurable: true
+});
+
+// #endregion
