@@ -23,7 +23,7 @@ var cookies = GetCookies();
 var screenHeight = window.screen.height;
 var screenWidth = window.screen.width;
 var today = GetTodayDateString();
-var isWide = window.innerwidth > 500;
+var isWide = window.innerWidth > 500;
 
 // #endregion
 
