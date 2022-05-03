@@ -60,9 +60,9 @@
             }
             else{
               alert("Неверное имя пользователя или пароль");
+              ChangeElementsActivity(false);
             }
           };
-          ChangeElementsActivity(false);
         };
         request.onerror = function(request) {
           alert("Ошибка соединения");
